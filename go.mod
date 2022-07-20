@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v1.1.0
 	github.com/go-ping/ping v1.1.0
 	github.com/mdlayher/wol v0.0.0-20220221231636-b763a792253a
-	github.com/pomaretta/mcpingserver v0.0.0-20220719212214-af44d43ea200
+	github.com/pomaretta/mcpingserver v0.0.0-20220720090037-d0050623aac6
 )
 
 require (

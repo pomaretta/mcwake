@@ -110,7 +110,7 @@ func main() {
 		config.Port,
 		hook,
 	)
-	// p.S.SetResponseTimeout(10)
+	p.S.SetResponseTimeout(0)
 
 	pw := PingerWrapper{
 		Active: false,
