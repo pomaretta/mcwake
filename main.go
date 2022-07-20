@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/base64"
 	"flag"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
@@ -17,6 +19,7 @@ import (
 type Config struct {
 	Port int
 
+	ServerIcon    string
 	Motd          string
 	MaxPlayers    int
 	OnlinePlayers int
@@ -77,6 +80,9 @@ func main() {
 		panic("Invalid broadcast address")
 	}
 
+	// NOTE: Parse favicon
+	favicon := readFavicon(config.ServerIcon)
+
 	hook := wake.New(
 		&mcpingserver.PingResponse{
 			Description: config.Motd,
@@ -88,6 +94,7 @@ func main() {
 				Name:     config.ServerVersion,
 				Protocol: uint(config.ProtocolVersion),
 			},
+			Faviconb64: favicon,
 		},
 		config.KickResponse,
 		&mcpingserver.LegacyPingResponse{
@@ -168,4 +175,13 @@ func main() {
 		log.Printf("[MAIN] Listener started.")
 	}
 
+}
+
+func readFavicon(loc string) string {
+	faviconData, err := ioutil.ReadFile(loc)
+	if err != nil {
+		return ""
+	} else {
+		return "data:image/png;base64," + base64.StdEncoding.EncodeToString(faviconData)
+	}
 }
