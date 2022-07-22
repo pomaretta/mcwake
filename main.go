@@ -31,6 +31,7 @@ type Config struct {
 	TargetMac       string
 	TargetBroadcast string
 	TargetIp        string
+	TargetDelay     int
 	Enabled         bool
 }
 
@@ -109,6 +110,7 @@ func main() {
 			Ba: broadcast,
 			Ip: ip,
 			E:  config.Enabled,
+			D:  config.TargetDelay,
 		},
 	)
 

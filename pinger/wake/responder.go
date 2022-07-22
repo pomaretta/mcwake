@@ -16,6 +16,7 @@ type WakeTarget struct {
 	Ba net.IP
 	Ip net.IP
 	E  bool
+	D  int
 }
 
 type WakeResponder struct {
@@ -53,9 +54,9 @@ func (wr *WakeResponder) RespondJoin(h *mcpingserver.Handshake, uid string) (int
 		uid,
 		wr.lst.String(),
 	)
-	if time.Since(wr.lst) < time.Minute*5 {
+	if time.Since(wr.lst) < time.Minute*time.Duration(wr.target.D) {
 		log.Printf("[JOIN] %s is too soon", h.SourceIP.String())
-		return "Hace menos de 5 minutos que se ha mandado el mensaje, espera un poco. - \u00A7b\u00A7l\u00A7nBernardo el Goblin", nil
+		return fmt.Sprintf("Hace menos de %d minutos que se ha mandado el mensaje, espera un poco. - \u00A7b\u00A7l\u00A7nBernardo el Goblin", wr.target.D), nil
 	}
 
 	if !wr.target.E {
@@ -66,7 +67,7 @@ func (wr *WakeResponder) RespondJoin(h *mcpingserver.Handshake, uid string) (int
 	ok := wr.isAlive()
 	if ok {
 		log.Printf("[JOIN] %s is alive, returning kr", wr.target.Ip.String())
-		return wr.kr, nil
+		return "El servidor ya está encendido, contacta con \u00A7b\u00A7lpomaretta. - \u00A7b\u00A7l\u00A7nBernardo el Goblin", nil
 	}
 	c, err := wol.NewClient()
 	if err != nil {
